@@ -27,7 +27,7 @@
             </div>
             <div class="pl-2">
                 <span class="block font-extrabold text-primary">{{__('Portionen')}}</span>
-                <input class="w-20" type="number" wire:model="{{$recipe->portion}}" value="{{$recipe->portion}}" />
+                <input class="w-20" type="number" wire:model.live="faktor" wire:change="updateFaktor"/>
             </div>
         </div>
         <div class="flex justify-end">
@@ -50,7 +50,7 @@
             <img src="{{ asset('storage/images/'.$recipe->image) }}" alt="{{ $recipe->name }}" class="w-full h-40 sm:h-64 object-cover rounded-lg">
         </div>
         <div class="sm:w-6/12">
-            <livewire:ingredients.index recipeId="{{$recipe->id}}" />
+            <livewire:ingredients.index recipeId="{{$recipe->id}}" faktor="{{$faktor}}" />
         </div>
     </div>
     <div class="border-t-2 mt-8 pt-4">

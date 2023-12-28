@@ -33,11 +33,9 @@ class EditList extends Component
                 'amount' => $ingredient['amount'],
                 'note' => $ingredient['note']
             ]);
-
         }
         $this->message = '';
         $this->redirect(route('recipes.index'));
-
     }
 
     public function recipeStored($recipe_id): void
@@ -56,7 +54,7 @@ class EditList extends Component
         $this->store($recipe_id);
     }
 
-    public function mount($id = null)
+    public function mount($id = null, $faktor)
     {
         info("mount: id=" . $id);
         if (!is_null($id)) {
@@ -70,7 +68,7 @@ class EditList extends Component
                         'id' => $ingredient->id,
                         'food' => $food->name,
                         'unit' => $unit->name,
-                        'amount' => $ingredient->amount,
+                        'amount' => ($ingredient->amount / $recipe->portion * 4) * $faktor,
                         'note' => $ingredient->note
                     ];
                     array_push($this->ingredients, $ingr);
@@ -78,7 +76,6 @@ class EditList extends Component
             } else {
                 $this->createEmptyIngredient();
             }
-
         } else {
             $this->createEmptyIngredient();
         }
@@ -99,7 +96,6 @@ class EditList extends Component
     public function addIngredient()
     {
         $this->createEmptyIngredient();
-
     }
 
     public function removeIngredient($index)
@@ -107,5 +103,4 @@ class EditList extends Component
         unset($this->ingredients[$index]);
         $this->ingredients = array_values($this->ingredients);
     }
-
 }

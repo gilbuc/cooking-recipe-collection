@@ -16,6 +16,7 @@ class Show extends Component
     public $portion = 0;
     public $instruction = 0;
 
+    public $faktor = 0;
     public function mount($id): void
     {
         $this->recipe = Recipe::with('user')->latest()->findOrFail($id);
@@ -25,6 +26,7 @@ class Show extends Component
         $this->worktime = $this->recipe->worktime;
         $this->portion = $this->recipe->portion;
         $this->instruction = $this->recipe->instruction;
+        $this->faktor = $this->portion;
     }
 
     public function edit($id)
@@ -42,7 +44,11 @@ class Show extends Component
         return redirect()->to('/recipes');
     }
 
-
+    public function updateFaktor()
+    {
+        info("Emit updateFaktor");
+        $this->dispatch('doUpdateFaktor', $this->faktor, $this->portion);
+    }
     public function render(): View
     {
         return view('livewire.recipes.show');
