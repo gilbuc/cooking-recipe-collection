@@ -54,7 +54,7 @@ class EditList extends Component
         $this->store($recipe_id);
     }
 
-    public function mount($id = null, $faktor)
+    public function mount($id = null)
     {
         info("mount: id=" . $id);
         if (!is_null($id)) {
@@ -68,7 +68,7 @@ class EditList extends Component
                         'id' => $ingredient->id,
                         'food' => $food->name,
                         'unit' => $unit->name,
-                        'amount' => ($ingredient->amount / $recipe->portion * 4) * $faktor,
+                        'amount' => $ingredient->amount,
                         'note' => $ingredient->note
                     ];
                     array_push($this->ingredients, $ingr);
