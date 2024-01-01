@@ -17,7 +17,7 @@ class Index extends Component
         info("doUpdateFaktor in EditList");
         foreach ($this->ingredients as $ingredient) {
             info("Faktor: " . $faktor . " Portion: ". $portion);
-            $ingredient->amount = ($ingredient->amount / $portion) * $faktor;
+            $ingredient->amount = round((($ingredient->amount / $portion) * $faktor),2);
             info("updateFaktor: " . $ingredient->amount);
         }
     }
