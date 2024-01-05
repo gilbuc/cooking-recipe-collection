@@ -58,6 +58,9 @@ class Edit extends Component
     {
         $this->authorize('update', $this->recipe);
         $validated = $this->validate();
+
+        $path = $this->image->store('public/images');
+        $validated['image'] = basename($path);
         $this->recipe->update($validated);
 
         info("Emit: Recipe Updated");
