@@ -3,7 +3,9 @@
 namespace App\Livewire\Recipes;
 
 use App\Models\Recipe;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Intervention\Image\ImageManager;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\Features\SupportRedirects\Redirector;
@@ -59,7 +61,7 @@ class Edit extends Component
         $this->authorize('update', $this->recipe);
         $validated = $this->validate();
 
-        $path = $this->image->store('public/images');
+        $path = $this->resizeImage();
         $validated['image'] = basename($path);
         $this->recipe->update($validated);
 
@@ -79,4 +81,13 @@ class Edit extends Component
     {
         return view('livewire.recipes.edit');
     }
+    public function resizeImage()
+    {
+        $path = $this->image->store('public/images');
+        $image = ImageManager::imagick()->read(Storage::get($path));
+        $image->scaleDown(width: 400);
+        Storage::put($path, $image->toJpeg(100));
+        return $path;
+    }
+
 }

@@ -3,11 +3,12 @@
 namespace App\Livewire\Recipes;
 
 
+use Intervention\Image\ImageManager;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\Features\SupportRedirects\Redirector;
 use Livewire\WithFileUploads;
-
+use Illuminate\Support\Facades\Storage;
 
 class Create extends Component
 {
@@ -38,7 +39,7 @@ class Create extends Component
     public function store(): void
     {
         $validated = $this->validate();
-        $path = $this->image->store('public/images');
+        $path = $this->resizeImage();
         $validated['image'] = basename($path);
         $recipe = auth()->user()->recipes()->create($validated);
 
@@ -55,5 +56,17 @@ class Create extends Component
     public function cancel(): Redirector
     {
         return redirect()->to('/recipes');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function resizeImage()
+    {
+        $path = $this->image->store('public/images');
+        $image = ImageManager::imagick()->read(Storage::get($path));
+        $image->scaleDown(width: 400);
+        Storage::put($path, $image->toJpeg(100));
+        return $path;
     }
 }
