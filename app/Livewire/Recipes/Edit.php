@@ -74,10 +74,9 @@ class Edit extends Component
 
     public function resizeImage()
     {
-        if (str_ends_with($this->image, ".tmp")) {
+        $path = 'public/images/' . $this->image;
+        if (!Storage::has($path)){
             $path = $this->image->store('public/images');
-        } else {
-            $path = 'public/images/' . $this->image;
         }
         info("Path:" . $path);
         $image = ImageManager::imagick()->read(Storage::get($path));
