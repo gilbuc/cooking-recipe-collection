@@ -72,6 +72,20 @@ class Edit extends Component
         return redirect()->to('/recipes');
     }
 
+    public function resizeImage()
+    {
+        if (str_ends_with($this->image, ".tmp")) {
+            $path = $this->image->store('public/images');
+        } else {
+            $path = 'public/images/' . $this->image;
+        }
+        info("Path:" . $path);
+        $image = ImageManager::imagick()->read(Storage::get($path));
+        $image->scaleDown(width: 400);
+        Storage::put($path, $image->toJpeg(100));
+        return $path;
+    }
+
     public function cancel(): Redirector
     {
         return redirect()->to('/recipes');
@@ -80,14 +94,6 @@ class Edit extends Component
     public function render(): View
     {
         return view('livewire.recipes.edit');
-    }
-    public function resizeImage()
-    {
-        $path = $this->image->store('public/images');
-        $image = ImageManager::imagick()->read(Storage::get($path));
-        $image->scaleDown(width: 400);
-        Storage::put($path, $image->toJpeg(100));
-        return $path;
     }
 
 }
