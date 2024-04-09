@@ -63,6 +63,10 @@ class Create extends Component
      */
     public function resizeImage()
     {
+        info("resizeImage" . $this->image);
+        if (empty($this->image)){
+            return $this->image;
+        }
         $path = $this->image->store('public/images');
         $image = ImageManager::imagick()->read(Storage::get($path));
         $image->scaleDown(width: 400);
