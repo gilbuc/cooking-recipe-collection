@@ -63,6 +63,7 @@ class Edit extends Component
 
         $path = $this->resizeImage();
         $validated['image'] = basename($path);
+
         $this->recipe->update($validated);
 
         info("Emit: Recipe Updated");
@@ -74,8 +75,11 @@ class Edit extends Component
 
     public function resizeImage()
     {
+        if (empty($this->image)) {
+            return $this->image;
+        }
         $path = 'public/images/' . $this->image;
-        if (!Storage::has($path)){
+        if (!Storage::has($path)) {
             $path = $this->image->store('public/images');
         }
         info("Path:" . $path);
